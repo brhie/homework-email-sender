@@ -23,7 +23,6 @@ background_label = tk.Label(frame, image=my_image)
 background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
 
-
 def open_file():
     os.system('open email_list.txt')
 
@@ -58,20 +57,38 @@ def send():
                     smtp.login(email, password)
                     smtp.send_message(email)
                     print(f'sending email to {line}...')
-                    lable1 = tk.Label(frame, text=f"Sending Email to {line}...")
+                    lable1 = tk.Label(
+                        frame, text=f"Sending Email to {line}...")
                     lable1.pack()
 
         label2 = tk.Label(frame, text="All Done!")
         label2.pack()
         homework.delete(0, 'end')
     except:
-        error_label = tk.Label(frame, text="Error Occurred", bg="deep sky blue")
+        error_label = tk.Label(
+            frame, text="Error Occurred", bg="deep sky blue")
         error_label.pack()
         homework.delete(0, 'end')
 
 
 def login():
-    pass
+    user_email = tk.Entry(frame, width=20, font=('Helvetica', 20))
+    user_email.pack(padx=10, pady=0)
+    
+    user_pw = tk.Entry(frame, width=20, font=('Helvetica', 20))
+    user_pw.pack(padx=10, pady=0)
+
+
+    confirm = tk.Button(
+        frame, text="Confirm Account", padx=10, pady=5, bg="#263D42", command=add_cred)
+    confirm.pack()
+
+
+
+def add_cred():
+    with open('./user_file.txt', mode='a') as file:
+        file.write(f'{user_email.get()} {user_pw.get()}')
+
 
 email = tk.Entry(frame, width=30, font=('Helvetica', 25))
 email.pack(padx=10, pady=10)
@@ -87,11 +104,26 @@ sendMail = tk.Button(frame, text="Send Homework",
                      padx=10, pady=5, bg="#263D42", command=send)
 sendMail.pack(pady=10)
 
-openFile = tk.Button(frame, text="Modify the Database File", padx=10, pady=5, bg="#263D42", command=open_file)
+openFile = tk.Button(frame, text="Modify the Database File",
+                     padx=10, pady=5, bg="#263D42", command=open_file)
 openFile.pack(side='bottom')
 
 
+with open('./user_file.txt', mode='r') as file:
+    if file.readline() == '':
+        Login = tk.Button(frame, text="Login", padx=15,
+                          pady=10, bg="#263D42", command=login)
+        Login.pack(side='bottom')
+    
+    elif len(file.readline().split()) == 2:
+        email = file.readline().split()[0]
+        user = tk.Label(root, text=email)
+        user.pack()
+    
+    else:
+        error_label = tk.Label(frame, text='Unknown Error', bg='deep sky blue')
+        error_label.pack()
 
 
-
-root.mainloop()
+if __name__ == "__main__":
+    root.mainloop()
