@@ -35,7 +35,7 @@ def add():
         with open('./email_list.txt', mode='a') as file:
             file.write(f'\n{email.get()}')
         label = tk.Label(
-            frame, text=f"Successfully Added '{email.get()}'' to Database", bg="deep sky blue")
+            frame, text=f"Successfully Added '{email.get()}'' to Email List", bg="deep sky blue")
         label.pack()
         email.delete(0, 'end')
 
