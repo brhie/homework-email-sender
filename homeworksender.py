@@ -1,6 +1,5 @@
 import smtplib
 from email.message import EmailMessage
-from pathlib import Path
 import tkinter as tk
 from PIL import Image, ImageTk
 import os
@@ -47,21 +46,21 @@ def send():
             for line in file:
                 email = EmailMessage()
                 email['Subject'] = 'Homework'
-                email['From'] = f'{email}'
+                email['From'] = account
                 email['to'] = line
                 email.set_content(homework.get())
 
                 with smtplib.SMTP(host='smtp.gmail.com', port=587) as smtp:
                     smtp.ehlo()
                     smtp.starttls()
-                    smtp.login(email, password)
+                    smtp.login(account, password)
                     smtp.send_message(email)
                     print(f'sending email to {line}...')
                     lable1 = tk.Label(
                         frame, text=f"Sending Email to {line}...")
                     lable1.pack()
 
-        label2 = tk.Label(frame, text="All Done!")
+        label2 = tk.Label(frame, text="All Done!", bg="deep sky blue")
         label2.pack()
         homework.delete(0, 'end')
     except:
@@ -71,23 +70,34 @@ def send():
         homework.delete(0, 'end')
 
 
+user_email = None
+user_pw = None
+
+
 def login():
+    global user_email
+    global user_pw
     user_email = tk.Entry(frame, width=20, font=('Helvetica', 20))
     user_email.pack(padx=10, pady=0)
-    
+
     user_pw = tk.Entry(frame, width=20, font=('Helvetica', 20))
     user_pw.pack(padx=10, pady=0)
-
 
     confirm = tk.Button(
         frame, text="Confirm Account", padx=10, pady=5, bg="#263D42", command=add_cred)
     confirm.pack()
 
 
-
 def add_cred():
-    with open('./user_file.txt', mode='a') as file:
+    global user_email
+    global user_pw
+    with open('./user_file.txt', mode='w') as file:
         file.write(f'{user_email.get()} {user_pw.get()}')
+    label = tk.Label(frame, text='Logged in. Please restart',
+                     bg='deep sky blue')
+    label.pack()
+    user_email.delete(0, 'end')
+    user_pw.delete(0, 'end')
 
 
 email = tk.Entry(frame, width=30, font=('Helvetica', 25))
@@ -104,24 +114,32 @@ sendMail = tk.Button(frame, text="Send Homework",
                      padx=10, pady=5, bg="#263D42", command=send)
 sendMail.pack(pady=10)
 
-openFile = tk.Button(frame, text="Modify the Database File",
+openFile = tk.Button(frame, text="Change Email list",
                      padx=10, pady=5, bg="#263D42", command=open_file)
 openFile.pack(side='bottom')
 
+changeAccount = tk.Button(frame, text="Change Account",
+                          padx=10, pady=5, bg='#263D42', command=login)
+changeAccount.pack(side='bottom')
+
 
 with open('./user_file.txt', mode='r') as file:
-    if file.readline() == '':
+    text = file.readline()
+    if len(text.split()) == 2:
+        account = text.split()[0]
+        password = text.split()[0]
+        user = tk.Label(frame, text=account, bg="deep sky blue")
+        user.pack(side='bottom')
+
+    elif text == '':
         Login = tk.Button(frame, text="Login", padx=15,
                           pady=10, bg="#263D42", command=login)
         Login.pack(side='bottom')
-    
-    elif len(file.readline().split()) == 2:
-        email = file.readline().split()[0]
-        user = tk.Label(root, text=email)
-        user.pack()
-    
+        sendMail.destroy()
+
     else:
-        error_label = tk.Label(frame, text='Unknown Error', bg='deep sky blue')
+        error_label = tk.Label(
+            frame, text='Unknown Error While Logging in', bg='deep sky blue')
         error_label.pack()
 
 

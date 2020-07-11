@@ -1,1 +1,1 @@
-test@mail.com 1234
+testmail@mail.com
