@@ -17,15 +17,16 @@ frame.place(relwidth=0.8, relheight=0.8, relx=0.1, rely=0.1)
 name = tk.Label(root, text="Homework Sender", font=('Herculanum', 30))
 name.pack()
 
+# opens background picture
 my_image = ImageTk.PhotoImage(Image.open('./bgpic.jpeg').resize((600, 600)))
 background_label = tk.Label(frame, image=my_image)
 background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-
+# gets called by openFile button
 def open_file():
     os.system('open email_list.txt')
 
-
+# gets called by addMail button
 def add():
     if email.get() == "":
         error_label = tk.Label(
@@ -39,7 +40,7 @@ def add():
         label.pack()
         email.delete(0, 'end')
 
-
+# gets called by sendMail button
 def send():
     try:
         with open('./email_list.txt', mode='r') as file:
@@ -70,6 +71,7 @@ def send():
         homework.delete(0, 'end')
 
 
+# declare a global variable that all functions can use
 user_email = None
 user_pw = None
 
@@ -87,7 +89,7 @@ def login():
         frame, text="Confirm Account", padx=10, pady=5, bg="#263D42", command=add_cred)
     confirm.pack()
 
-
+# writes credentials to user_file.txt
 def add_cred():
     global user_email
     global user_pw
@@ -135,7 +137,7 @@ with open('./user_file.txt', mode='r') as file:
         Login = tk.Button(frame, text="Login", padx=15,
                           pady=10, bg="#263D42", command=login)
         Login.pack(side='bottom')
-        sendMail.destroy()
+        sendMail.destroy()  # unable to send email if there isn't user email
 
     else:
         error_label = tk.Label(
