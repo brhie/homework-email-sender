@@ -22,9 +22,11 @@ my_image = ImageTk.PhotoImage(Image.open('./bgpic.jpeg').resize((600, 600)))
 background_label = tk.Label(frame, image=my_image)
 background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
+
 # gets called by openFile button
 def open_file():
     os.system('open email_list.txt')
+
 
 # gets called by addMail button
 def add():
@@ -39,6 +41,7 @@ def add():
             frame, text=f"Successfully Added '{email.get()}'' to Email List", bg="deep sky blue")
         label.pack()
         email.delete(0, 'end')
+
 
 # gets called by sendMail button
 def send():
@@ -110,7 +113,7 @@ addMail = tk.Button(frame, text="Add Email", padx=10,
 addMail.pack()
 
 homework = tk.Entry(frame, width=30, font=('Helvetica', 25))
-homework.pack(padx=10, pady=10, ipady=30)
+homework.pack(padx=10, pady=10, ipady=20)
 
 sendMail = tk.Button(frame, text="Send Homework",
                      padx=10, pady=5, bg="#263D42", command=send)
@@ -129,20 +132,22 @@ with open('./user_file.txt', mode='r') as file:
     text = file.readline()
     if len(text.split()) == 2:
         account = text.split()[0]
-        password = text.split()[0]
-        user = tk.Label(frame, text=account, bg="deep sky blue")
-        user.pack(side='bottom')
+        password = text.split()[1]
+        user_label = tk.Label(frame, text=account, bg="#49A")
+        user_label.pack(side='bottom')
 
     elif text == '':
         Login = tk.Button(frame, text="Login", padx=15,
                           pady=10, bg="#263D42", command=login)
         Login.pack(side='bottom')
         sendMail.destroy()  # unable to send email if there isn't user email
+        changeAccount.destroy()  # cannot change account if there isn't one
 
     else:
         error_label = tk.Label(
             frame, text='Unknown Error While Logging in', bg='deep sky blue')
         error_label.pack()
+        sendMail.destroy()  # unable to send email if there is an error
 
 
 if __name__ == "__main__":
