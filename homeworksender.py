@@ -74,7 +74,7 @@ def send():
         homework.delete(0, 'end')
 
 
-# declare a global variable that all functions can use
+# declare a global variable that both login and add_cred functions can use
 user_email = None
 user_pw = None
 
@@ -130,7 +130,7 @@ changeAccount.pack(side='bottom')
 
 with open('./user_file.txt', mode='r') as file:
     text = file.readline()
-    if len(text.split()) == 2:
+    if len(text.split()) == 2:  # proper account and password pair
         account = text.split()[0]
         password = text.split()[1]
         user_label = tk.Label(frame, text=account, bg="#49A")
