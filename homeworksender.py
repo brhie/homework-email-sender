@@ -57,6 +57,7 @@ def send():
                 with smtplib.SMTP(host='smtp.gmail.com', port=587) as smtp:
                     smtp.ehlo()
                     smtp.starttls()
+                    smtp.ehlo()
                     smtp.login(account, password)
                     smtp.send_message(email)
                     print(f'sending email to {line}...')
@@ -119,7 +120,7 @@ sendMail = tk.Button(frame, text="Send Homework",
                      padx=10, pady=5, bg="#263D42", command=send)
 sendMail.pack(pady=10)
 
-openFile = tk.Button(frame, text="Change Email list",
+openFile = tk.Button(frame, text="Change Email List",
                      padx=10, pady=5, bg="#263D42", command=open_file)
 openFile.pack(side='bottom')
 
