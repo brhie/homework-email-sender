@@ -94,6 +94,8 @@ def login():
     confirm.pack()
 
 # writes credentials to user_file.txt
+
+
 def add_cred():
     global user_email
     global user_pw
