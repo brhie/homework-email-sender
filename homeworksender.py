@@ -1,9 +1,8 @@
 import smtplib
+import os
 from email.message import EmailMessage
 import tkinter as tk
 from PIL import Image, ImageTk
-import os
-
 
 root = tk.Tk()
 
@@ -35,8 +34,8 @@ def add():
             frame, text="Please Enter a Text", bg="deep sky blue")
         error_label.pack()
     else:
-        with open('./email_list.txt', mode='a') as file:
-            file.write(f'\n{email.get()}')
+        with open('./email_list.txt', mode='a') as my_file:
+            my_file.write(f'\n{email.get()}')
         label = tk.Label(
             frame, text=f"Successfully Added '{email.get()}'' to Email List", bg="deep sky blue")
         label.pack()
@@ -46,8 +45,8 @@ def add():
 # gets called by sendMail button
 def send():
     try:
-        with open('./email_list.txt', mode='r') as file:
-            for line in file:
+        with open('./email_list.txt', mode='r') as email_list_file:
+            for line in email_list_file:
                 email = EmailMessage()
                 email['Subject'] = 'Homework'
                 email['From'] = account
@@ -93,9 +92,8 @@ def login():
         frame, text="Confirm Account", padx=10, pady=5, bg="#263D42", command=add_cred)
     confirm.pack()
 
-# writes credentials to user_file.txt
 
-
+# writes credentials
 def add_cred():
     global user_email
     global user_pw
@@ -147,9 +145,9 @@ with open('./user_file.txt', mode='r') as file:
         changeAccount.destroy()  # cannot change account if there isn't one
 
     else:
-        error_label = tk.Label(
+        login_error_label = tk.Label(
             frame, text='Unknown Error While Logging in', bg='deep sky blue')
-        error_label.pack()
+        login_error_label.pack()
         sendMail.destroy()  # unable to send email if there is an error
 
 
