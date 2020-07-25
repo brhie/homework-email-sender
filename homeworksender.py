@@ -17,7 +17,7 @@ name = tk.Label(root, text="Homework Sender", font=('Herculanum', 30))
 name.pack()
 
 # opens background picture
-my_image = ImageTk.PhotoImage(Image.open('./bgpic.jpeg').resize((600, 600)))
+my_image = ImageTk.PhotoImage(Image.open('./bgpic.jpg').resize((600, 600)))
 background_label = tk.Label(frame, image=my_image)
 background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
